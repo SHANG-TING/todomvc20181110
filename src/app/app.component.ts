@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   appTitle = 'Todos';
   placeholderText = 'What needs to be done?? O_O';
+  background = 'green';
 
   newTodo(inputElement) {
     console.log(inputElement.value);

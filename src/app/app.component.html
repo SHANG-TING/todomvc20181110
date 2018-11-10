@@ -4,6 +4,7 @@
     <input class="new-todo"
            [placeholder]="placeholderText"
            #todo
+           [style.background-color]="background"
            (keyup.enter)="newTodo(todo)"
            autofocus>
   </header>
