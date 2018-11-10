@@ -9,6 +9,7 @@ export class AppComponent {
   appTitle = 'Todos';
   placeholderText = 'What needs to be done?? O_O';
   background = 'green';
+  todoValue = '';
 
   newTodo(inputElement) {
     console.log(inputElement.value);
