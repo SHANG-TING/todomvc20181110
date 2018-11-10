@@ -9,9 +9,7 @@ export class AppComponent {
   appTitle = 'Todos';
   placeholderText = 'What needs to be done?? O_O';
 
-  onKey(event, inputElement) {
-    if (event.code === 'Enter') {
-      console.log(inputElement.value);
-    }
+  newTodo(inputElement) {
+    console.log(inputElement.value);
   }
 }

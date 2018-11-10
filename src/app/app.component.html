@@ -4,7 +4,7 @@
     <input class="new-todo"
            [placeholder]="placeholderText"
            #todo
-           (keyup)="onKey($event, todo)"
+           (keyup.enter)="newTodo(todo)"
            autofocus>
   </header>
   <!-- This section should be hidden by default and shown when there are todos -->
