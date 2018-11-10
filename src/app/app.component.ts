@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-
-export interface Todo {
-  name: string;
-  checked: boolean;
-  completed: boolean;
-  isEdit: boolean;
-}
+import { DataService } from './shared/services/data.service';
 
 @Component({
   selector: 'app-root',
@@ -16,39 +10,39 @@ export class AppComponent {
   appTitle = 'Todos';
   placeholderText = 'What needs to be done?? O_O';
   background = 'green';
-  todos: Todo[] = [];
-  get totalCount() {
-    return this.todos.filter(x => x.checked).length;
+  get todos() {
+    switch (this.selectedStatus) {
+      case 'Active':
+        return this.dataService.todos.filter(x => !x.isCompleted);
+      case 'Completed':
+        return this.dataService.todos.filter(x => x.isCompleted);
+      default:
+        return this.dataService.todos;
+    }
   }
+  get itemLeft() {
+    return this.dataService.todos.filter(x => !x.isCompleted).length;
+  }
+  displayStatus = ['All', 'Active', 'Completed'];
+  selectedStatus = 'All';
   todoValue = '';
 
+  constructor(private dataService: DataService) {}
+
   newTodo(inputElement) {
-    const todo: Todo = {
-      name: inputElement.value,
-      checked: false,
-      completed: false,
-      isEdit: false,
-    };
-    this.todos.push(todo);
+    this.dataService.newTodo(inputElement.value);
   }
 
-  removeTodo(index) {
-    this.todos.splice(index, 1);
+  removeTodo(idx, todo) {
+    this.dataService.removeTodo(idx, todo);
   }
 
-  selectAll() {
-    this.todos.map(x => (x.checked = true));
+  complteAll() {
+    this.dataService.complteAll();
   }
 
-  clearComplete() {
-    this.todos.map(x => (x.completed = false));
-  }
-
-  onActive() {
-    this.todos.filter(x => x.checked).map(x => (x.completed = false));
-  }
-
-  onComplete() {
-    this.todos.filter(x => x.checked).map(x => (x.completed = true));
+  clearAllComplete() {
+    this.dataService.clearAllComplete();
+    this.selectedStatus = 'All';
   }
 }
