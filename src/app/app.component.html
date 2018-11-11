@@ -1,66 +1,71 @@
 <section class="todoapp">
   <header class="header">
     <h1>{{ appTitle }}</h1>
-    <input class="new-todo"
-           [placeholder]="placeholderText"
-           #todo
-           [(ngModel)]="todoValue"
-           [style.background-color]="background"
-           (keyup.enter)="newTodo(todo)"
-           autofocus>
+    <input
+      class="new-todo"
+      [placeholder]="placeholderText"
+      #todo
+      [(ngModel)]="todoValue"
+      [style.background-color]="background"
+      (keyup.enter)="newTodo(todo)"
+      autofocus
+    />
   </header>
   <!-- This section should be hidden by default and shown when there are todos -->
-  <section class="main"
-           *ngIf="todos?.length > 0">
-    <input class="toggle-all"
-           type="checkbox">
-    <label for="toggle-all"
-           (click)="complteAll()">Mark all as complete</label>
+  <section class="main" *ngIf="todos?.length > 0">
+    <input class="toggle-all" type="checkbox" />
+    <label for="toggle-all" (click)="complteAll()">Mark all as complete</label>
     <ul class="todo-list">
       <!-- These are here just to show the structure of the list items -->
-      <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-      <li *ngFor="let todo of todos; let idx = index"
-          [ngClass]="{completed: todo.isCompleted}">
-        <div class="view"
-             *ngIf="!todo.isEdit; else editTmpl"
-             (dblclick)="todo.isEdit = !todo.isEdit">
-          <input class="toggle"
-                 type="checkbox"
-                 [(ngModel)]="todo.isCompleted">
+      <!--
+        List items should get the class `editing` when editing and `completed` when marked as completed
+      -->
+      <li
+        *ngFor="let todo of (todos | stateFilter: selectedState); let idx = index"
+        [ngClass]="{ completed: todo.isCompleted }"
+      >
+        <div
+          class="view"
+          *ngIf="!todo.isEdit; else: editTmpl"
+          (dblclick)="todo.isEdit = !todo.isEdit"
+        >
+          <input class="toggle" type="checkbox" [(ngModel)]="todo.isCompleted" />
           <label>{{ todo.name }}</label>
-          <button class="destroy"
-                  [disabled]="selectedStatus !== 'All'"
-                  (click)="removeTodo(idx)"></button>
+          <button
+            class="destroy"
+            [disabled]="selectedState !== 'All'"
+            (click)="removeTodo(idx)"
+          ></button>
         </div>
         <ng-template #editTmpl>
-          <input class="edit"
-                 [(ngModel)]="todo.name"
-                 (blur)="todo.isEdit = !todo.isEdit">
+          <input class="edit" [(ngModel)]="todo.name" (blur)="todo.isEdit = !todo.isEdit" />
         </ng-template>
-
       </li>
     </ul>
   </section>
   <!-- This footer should hidden by default and shown when there are todos -->
   <footer class="footer">
     <!-- This should be `0 items left` by default -->
-    <span class="todo-count"><strong>{{ itemLeft }}</strong> item left</span>
+    <span class="todo-count"
+      ><strong>{{ itemLeft }}</strong> item left</span
+    >
     <!-- Remove this if you don't implement routing -->
     <ul class="filters">
-      <li *ngFor="let status of displayStatus">
-        <a [ngClass]="{selected: selectedStatus === status}"
-           href="javascript:void(0)"
-           (click)="selectedStatus = status">{{ status }}</a>
+      <li *ngFor="let status of displayStates">
+        <a
+          [ngClass]="{ selected: selectedState === status }"
+          href="javascript:void(0)"
+          (click)="selectedState = status"
+          >{{ status }}</a
+        >
       </li>
     </ul>
     <!-- Hidden if no completed items are left ↓ -->
-    <button class="clear-completed"
-            (click)="clearAllComplete()">Clear completed</button>
+    <button class="clear-completed" (click)="clearAllComplete()">Clear completed</button>
   </footer>
 </section>
 
 <app-footer></app-footer>
-
 
 {{ todos | json }}
 

@@ -11,26 +11,13 @@ export class AppComponent {
   placeholderText = 'What needs to be done?? O_O';
   background = 'green';
   get todos() {
-    // switch (this.selectedStatus) {
-    //   case 'Active':
-    //     return this.dataService.todos.filter(x => !x.isCompleted);
-    //   case 'Completed':
-    //     return this.dataService.todos.filter(x => x.isCompleted);
-    //   default:
-    //     return this.dataService.todos;
-    // }
-    return this.dataService.todos.filter(this.displayStatusFuncs[this.selectedStatus]);
+    return this.dataService.todos;
   }
   get itemLeft() {
     return this.dataService.todos.filter(x => !x.isCompleted).length;
   }
-  displayStatus = ['All', 'Active', 'Completed'];
-  displayStatusFuncs = {
-    Completed: (x: any) => !x.isCompleted,
-    Active: (x: any) => x.isCompleted,
-    All: (x: any) => true,
-  };
-  selectedStatus = 'All';
+  displayStates = ['All', 'Active', 'Completed'];
+  selectedState = 'All';
   todoValue = '';
 
   constructor(private dataService: DataService) {}
@@ -49,6 +36,6 @@ export class AppComponent {
 
   clearAllComplete() {
     this.dataService.clearAllComplete();
-    this.selectedStatus = 'All';
+    this.selectedState = 'All';
   }
 }
